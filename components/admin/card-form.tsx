@@ -40,7 +40,12 @@ export default function CardForm({ initialData, onSaved }: CardFormProps) {
     try {
       const response = await fetch("/api/categories")
       const data = await response.json()
-      setCategories(data)
+      if (response.ok && Array.isArray(data)) {
+        setCategories(data)
+      } else {
+        console.error("Failed to fetch categories, server returned:", data)
+        setCategories([])
+      }
     } catch (error) {
       console.error("Failed to fetch categories:", error)
     }
